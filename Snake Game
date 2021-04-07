@@ -1,0 +1,113 @@
+import pygame
+import random
+pygame.init() #init is used to initialize all the functions in the library
+f_w = 900   #frame or window size
+f_h = 500   #frame or window size
+#create a display or frame
+dis = pygame.display.set_mode((f_w,f_h)) #have to mention double braces
+pygame.display.set_caption("kiran") #giving a name to the window
+clock = pygame.time.Clock()#to note down the time
+game_over = False
+snk_size = 10
+font = pygame.font.SysFont("times new roman", 35)
+#creating snake
+def snake( snk_size, snk_list):
+    for x in snk_list:
+        pygame.draw.rect(dis, "blue", [x[0], x[1], snk_size, snk_size])
+
+def message(msg,color):
+    msgs = font.render(msg,True,color)
+    dis.blit(msgs, [f_w/6,f_h/2])
+
+def score(score):
+    v = font.render("YOUR SCORE:" + str(score), True,"orange" )
+    dis.blit(v,[600,0])
+
+
+def gameloop():
+    game_over = False
+    game_cls = False
+    x1 = f_w / 2  # to start d snake exactly at the middle of the window
+    y1 = f_h / 2
+    x2 = 0  # changed positions of the snake
+    y2 = 0
+
+    snk_list = []
+    length_of_snake = 1
+
+    #creating food
+    foodx = round(random.randint(20,880)/10) * 10
+    foody = round(random.randint(20,480)/10) * 10
+
+    while not game_over:
+        #if u r nt giving this loop thn ur display will not stay it will cls as soon as u open it
+
+        while game_cls == True:
+            dis.fill("red")
+            message("YOU LOST Game Over", 'orange')
+            pygame.display.update()
+
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_q:
+                        game_over = True
+                        game_cls = False
+                    if event.key == pygame.K_r:
+                        gameloop()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                game_over = True
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
+                    x2 = -10
+                    y2 = 0
+                elif event.key == pygame.K_RIGHT:
+                    x2 = 10
+                    y2 = 0
+                elif event.key == pygame.K_UP:
+                    y2 = -10
+                    x2 = 0
+                elif event.key == pygame.K_DOWN:
+                    y2 = 10
+                    x2 = 0
+
+        # if snake moves out of window thn d game is over
+        if x1 >= f_w or x1 < 0 or y1 >= f_h or y1 < 0:
+            game_cls = True
+
+        x1 += x2
+        y1 += y2
+        dis.fill("skyblue")#this line is very important if u forget u'll get lines instead of snake
+
+        pygame.draw.rect(dis, "black", [foodx,foody,10,10]) #creating food
+
+        head = []   #as the snake eats food it should grow so v should append its co-ordinates
+        head.append(x1)
+        head.append(y1)
+        snk_list.append(head)
+        if len(snk_list) > length_of_snake: #as the head increases we should cut tail so tat snake increases only once
+            del snk_list[0]
+
+
+        #if u don't want snake to go reverse u can use this loop
+        #for x in snk_list[:-1]:
+            #if x == head:
+                #game_cls = True
+
+        snake(snk_size, snk_list)
+        score(length_of_snake-1)
+
+        if x1 == foodx and y1 == foody:
+            foodx = round(random.randint(20, 880)/10) * 10 #if u change any of these ull nt get crt o/p
+            foody = round(random.randint(20, 480)/10) * 10
+            length_of_snake += 1
+
+        pygame.display.update()
+
+        clock.tick(10) #dis is used to control the speed of snake
+
+    pygame.quit()
+    quit()
+
+gameloop()
