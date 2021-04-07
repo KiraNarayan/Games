@@ -1,0 +1,18 @@
+date = int(input("enter date"))
+month = int(input("enter month"))
+year = int(input("enter year"))
+week = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
+months = [0,31, 29, 31, 30, 31, 30, 31, 30, 31, 30, 31, 30]
+s = 0
+cal_year = year - 1
+x = cal_year % 400
+z = ((x // 100)*5)%7 
+c = x % 100
+l_year = c // 4
+nor_year = c - l_year
+odd = ((l_year * 2) + nor_year ) % 7
+for i in range(month):
+    s = s + months[i]
+s = (s + date) %7
+final = (z + s+ odd) % 7
+print('the day on', date, month, year,'is',week[final])
