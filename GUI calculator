@@ -1,13 +1,10 @@
 from tkinter import *
-expression = "" #expression annoduond empty value
-#nin num(button) press madid takshna adu expression li add aggthiruthe
+expression = "" 
 def press(num):
     global expression
     expression = expression + str(num)
-    equation.set(expression) #idu expresssion update aagodakke so tat global expression val change aagathe
+    equation.set(expression) 
 
-#equal press madre expression evaluate madri antha artha
-#eval annodu idra inbuilt fun
 def equalpress():
     global expression
     try:
@@ -18,24 +15,20 @@ def equalpress():
         equation.set("error")
         expression = ""
 
-#clear press madre expression alli iro val mathe empty aagathe
 def clear():
     global expression
     expression = ""
     equation.set("")
 
-#naavu ega gui window na ready madthidivi
 window = tkinter.Tk()
 window.configure(background = "light green")
 window.geometry("300x150")
 window.title(" my Calculator")
 equation = tkinter.IntVar()
-#StringVar yake andre idra default val empty aagiruthe
-#ade IntVar andre default val 0(zero) aagiruthe IntVar kuda kodbodu
 lab = tkinter.Entry(window, text = equation, background ='light blue')
-lab.grid(columnspan = 4, ipadx = 90)#ipadx andre udda
+lab.grid(columnspan = 4, ipadx = 90)
 equation.set('enter ur expression')
-#illi lambda kodlilla andre op alli 1 or any num fix aagogiruthe nav press madre matra thagobeku antha lambda kotidivi
+
 b1 = tkinter.Button(window, text ='1', bg ='yellow', height = 1, width = 7, command = lambda: press(1))
 b1.grid(column = 0, row = 2)
 
